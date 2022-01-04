@@ -1,0 +1,31 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "graphql server for client ",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "nodemon ./server.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViolettaRyabtsev/graphQl-server.git"
+  },
+  "author": "violetta-ryabtsev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViolettaRyabtsev/graphQl-server/issues"
+  },
+  "homepage": "https://github.com/ViolettaRyabtsev/graphQl-server#readme",
+  "dependencies": {
+    "apollo-server": "^3.6.1",
+    "apollo-server-core": "^3.6.1",
+    "apollo-server-express": "^3.0.0-rc.1",
+    "express": "^4.17.2",
+    "graphql": "^16.2.0",
+    "mongoose": "^6.1.4",
+    "node": "^17.3.0",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.1"
+  }
+}

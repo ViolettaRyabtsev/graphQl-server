@@ -1,40 +1,100 @@
-const url = "http//localhost:4000/";
-const PORT = 4000;
 const express = require("express");
-const { typeDefs } = require("./typeDefs.js");
-const { resolvers } = require("./resolvers");
+const data = require("./Data.json");
+const mysql = require("mysql2");
 const { ApolloServer, gql } = require("apollo-server-express");
-const mongoose = require("mongoose");
 const {
   ApolloServerPluginLandingPageGraphQLPlayground,
 } = require("apollo-server-core");
+// const typeDefs = require("./typeDefs");
+// const resolvers = require("./resolvers");
+const { conn } = require("./db");
 
-async function startServer() {
+const typeDefs = gql`
+  type Note {
+    name: String!
+    text: String!
+    id: ID!
+  }
+  type Query {
+    notes: [Note!]!
+  }
+
+  type Mutation {
+    addNote(name: String!, text: String!, id: ID!): Note
+  }
+
+  type Mutation {
+    deleteNote(name: String!, text: String!, id: ID!): Note
+  }
+`;
+
+const resolvers = {
+  Query: {
+    notes: () => {
+      //mysql2
+      conn;
+      return new Promise((res, rej) => {
+        conn.query("SELECT * FROM customers", function (err, result, fields) {
+          return res(result);
+        });
+      });
+    },
+  },
+
+  Mutation: {
+    addNote(parents, args) {
+      const note = {
+        name: args.name,
+        text: args.text,
+        id: args.id,
+        email: null,
+      };
+
+      console.log(note, "here");
+
+      return new Promise((res, rej) => {
+        let sql = `INSERT INTO customers (name, text, id) VALUES ('${note.name}', '${note.text}', '${note.id}')`;
+        conn.query(sql, note, (err, result, fields) => {
+          if (!err) {
+            res(result);
+          }
+        });
+      });
+    },
+    deleteNote(parents, args) {
+      const note2 = {
+        name: args.name,
+        text: args.text,
+        id: args.id,
+        email: null,
+      };
+      console.log(note2, "delete note");
+      //delete from mysql
+    },
+  },
+};
+
+let PORT = 3060;
+
+async function createServer() {
   const app = express();
-  const apolloServer = new ApolloServer({
-    resolvers,
+  const server = new ApolloServer({
     typeDefs,
-    plugins: [
-      ApolloServerPluginLandingPageGraphQLPlayground({
-        // options
-      }),
-    ],
+    resolvers,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground({ app })],
   });
 
-  await apolloServer.start();
+  await server.start();
 
-  apolloServer.applyMiddleware({ app });
-  app.use((req, res) => {
-    res.send("hello from apollo");
+  server.applyMiddleware({ app });
+
+  app.get("/graphql", (req, res) => {
+    res.send("hello world");
   });
-  mongoose.connect("mongodb://localhost:27017/graphql");
-  // mongoose.connection.on("open", () => console.log("connected"));
-  mongoose.connection.once("open", () => {
-    console.log("connected");
+
+  app.listen(PORT, () => {
+    console.log(`port listen on http://localhost:${PORT}/graphql`);
   });
-  app.listen(PORT, () =>
-    console.log(`🚀  Server ready at http//localhost:${PORT}/graphql`)
-  );
 }
 
-startServer();
+createServer();

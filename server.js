@@ -65,11 +65,17 @@ const resolvers = {
       const note2 = {
         name: args.name,
         text: args.text,
-        id: args.id,
+        id: Number(args.id),
         email: null,
       };
       console.log(note2, "delete note");
       //delete from mysql
+      return new Promise((res, rej) => {
+        const sql = `DELETE FROM customers WHERE id=${note2.id}`;
+        conn.query(sql, note2, (err, result, fields) => {
+          if (!err) res(result);
+        });
+      });
     },
   },
 };

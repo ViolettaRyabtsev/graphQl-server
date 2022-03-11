@@ -1,0 +1,35 @@
+INSERT INTO COCKTAILS (name, image, text, price) 
+VALUES 
+('Cuban Mojito', 'https://cocktail-list.s3.us-west-2.amazonaws.com/cocktails+list/havana.jpg', 'White granulated sugar, fresh lime juice, mint leaves ,lime,  ice, light rum, club soda mint', 16);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+('main-photo', '/cocktails_list/main.photo.jpg', 'main-photo', 23);
+
+
+
+
+
+('Berry Apple Cocktail', 'https://cocktail-list.s3.us-west-2.amazonaws.com/cocktails+list/apple.jpg', 
+'Spiced Rum, Crown Royal Regal Apple, Orange Liquor, Cranberry Juice, Apple juice', 24)
+
+INSERT INTO COCKTAILS (name, image, text, price) 
+VALUES 
+('Blackberry Mint Julep', 'https://cocktail-list.s3.us-west-2.amazonaws.com/cocktails+list/blackberry.jpg', 'bourbon, simple syrup, blackberries, mint leaves', 21);
+
+
+
+('Spicy Grapefruit Margaritas', 'https://cocktail-list.s3.us-west-2.amazonaws.com/cocktails+list/dandelion.jpg', 'Fresh lime juice, light agave nectar, sliced jalapeño, grapefruit juice, agave blanco', 18)
+
+INSERT INTO COCKTAILS (name, image, text, price) 
+VALUES 
+('Fig smash', 'https://cocktail-list.s3.us-west-2.amazonaws.com/cocktails+list/fig-pink.jpg', 'brown sugar,cup water, sprigs of rosemary, figs', 28);

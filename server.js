@@ -10,11 +10,30 @@ const {
 const { conn } = require("./db");
 
 const typeDefs = gql`
+  type Cocktail {
+    id: ID!
+    name: String!
+    image: String!
+    text: String!
+    price: Int!
+  }
+
+  type Query {
+    cocktailList: [Cocktail!]!
+  }
+
+  type Login {
+    id: ID!
+    username: String!
+    password: String!
+  }
+
   type Note {
     name: String!
     text: String!
     id: ID!
   }
+
   type Query {
     notes: [Note!]!
   }
@@ -22,9 +41,12 @@ const typeDefs = gql`
   type Mutation {
     addNote(name: String!, text: String!, id: ID!): Note
   }
-
   type Mutation {
     deleteNote(name: String!, text: String!, id: ID!): Note
+  }
+
+  type Mutation {
+    addUser(id: ID!, username: String!, password: String!): Login
   }
 `;
 
@@ -35,6 +57,16 @@ const resolvers = {
       conn;
       return new Promise((res, rej) => {
         conn.query("SELECT * FROM customers", function (err, result, fields) {
+          return res(result);
+        });
+      });
+    },
+
+    cocktailList: () => {
+      const sql = "SELECT * FROM cocktails";
+      return new Promise((res, rej) => {
+        conn.query(sql, (err, result, fields) => {
+          console.log(result, "cocktails");
           return res(result);
         });
       });
@@ -77,13 +109,27 @@ const resolvers = {
         });
       });
     },
-  },
+    addUser(parents, args) {
+      const NewUser = {
+        id: args.id,
+        username: args.username,
+        password: args.password,
+      };
+      console.log(NewUser, "add User ");
+      let sql = `INSERT INTO users (id, username, password ) VALUES ('${NewUser.id}', '${NewUser.username}', '${NewUser.password}')`;
+      return new Promise((res, rej) => {
+        conn.query(sql, function (err, result, fields) {
+          return res(result);
+        });
+      });
+    },
+  }, //end of mutation
 };
 
 let PORT = 3060;
 
 async function createServer() {
-  const app = express();
+  const app = express(); 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -92,7 +138,7 @@ async function createServer() {
 
   await server.start();
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app }); 
 
   app.get("/graphql", (req, res) => {
     res.send("hello world");

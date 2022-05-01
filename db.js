@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-const { resourceLimits } = require("worker_threads");
 const dotenv = require("dotenv");
 dotenv.config();
 

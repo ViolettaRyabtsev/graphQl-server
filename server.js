@@ -37,6 +37,9 @@ const typeDefs = gql`
   type Query {
     notes: [Note!]!
   }
+  type Query {
+    users: [Login!]!
+  }
 
   type Mutation {
     addNote(name: String!, text: String!, id: ID!): Note
@@ -71,6 +74,17 @@ const resolvers = {
         });
       });
     },
+
+    users: () => {
+      const sql = "SELECT * FROM users";
+      conn;
+      return new Promise((res, reg) => {
+        conn.query(sql, (err, result, fields) => {
+          console.log(result, "users");
+          return res(result);
+        });
+      });
+    },
   },
 
   Mutation: {
@@ -93,6 +107,7 @@ const resolvers = {
         });
       });
     },
+
     deleteNote(parents, args) {
       const note2 = {
         name: args.name,
@@ -129,7 +144,7 @@ const resolvers = {
 let PORT = 3060;
 
 async function createServer() {
-  const app = express(); 
+  const app = express();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -138,7 +153,7 @@ async function createServer() {
 
   await server.start();
 
-  server.applyMiddleware({ app }); 
+  server.applyMiddleware({ app });
 
   app.get("/graphql", (req, res) => {
     res.send("hello world");

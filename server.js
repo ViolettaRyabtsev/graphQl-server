@@ -29,13 +29,13 @@ const typeDefs = gql`
   }
 
   type Note {
-    name: String!
-    text: String!
-    id: ID!
+    name: String
+    text: String
+    id: ID
   }
 
   type Query {
-    notes: [Note!]!
+    notes: [Note]
   }
   type Query {
     users: [Login!]!

@@ -1,0 +1,31 @@
+version: "3.8"
+services: 
+  mysqlGraphQl:
+    platform: linux/x86_64
+    image: mysql:latest
+    restart: always
+    env_file: ./.env 
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nodeDb
+    ports: 
+      - 3306:3306  
+    volumes: 
+      - db:/var/lib/mysql
+  node_app: 
+    depends_on:
+      - mysqlGraphQl
+    build: . 
+    restart: unless-stopped
+    ports: 
+      - 3060:3060
+    environment:
+      - DB_HOST=mysqlGraphQl
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=nodeDb
+      - DB_PORT=3360
+volumes: 
+  db:
+
+

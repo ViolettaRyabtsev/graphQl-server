@@ -2,9 +2,8 @@ version: '3.8'
 services:
   mysqldb:
     build: ./db
-    command: mysqld --default-authentication-plugin=mysql_native_password
+    platform: linux/arm64/v8
     restart: unless-stopped
-    platform: linux/amd64/v8
     env_file: ./.env
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -13,7 +12,7 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-  app:
+  backend-app:
     depends_on:
       - mysqldb
     build: .

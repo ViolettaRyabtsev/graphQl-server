@@ -1,32 +1,32 @@
-version: '3.8'
+version: "3.8"
 services:
-  mysqldb:
+  mysql_ser:
     build: ./db
-    platform: linux/arm64/v8
-    restart: unless-stopped
-    env_file: ./.env
+    platform: linux/amd64
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=nodeDb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nodeDB
+    #  MYSQL_ROOT_HOST: '%'  # needs to be enclosed with quotes'
     ports:
-      - 3306:3306
-    volumes:
-      - db:/var/lib/mysql
-  backend-app:
+      - '3306:3306'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+  backend-mysql:
     depends_on:
-      - mysqldb
+      mysql_ser:
+        condition: service_healthy
     build: .
-    restart: unless-stopped
-    env_file: ./.env
+    environment:
+      MYSQL_DATABASE: nodeDB
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: mysql_ser # needs to be enclosed with quotes
+    links:
+      - mysql_ser
     ports:
       - 3060:3060
-    environment:
-      - DB_HOST=mysqldb
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=nodeDb
-      - DB_PORT=mysqldb
-    stdin_open: true
-    tty: true
-volumes:
-  db:
+    restart: always
